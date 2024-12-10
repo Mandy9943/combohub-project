@@ -4,13 +4,20 @@ import { Button } from "@/components/ui/button";
 import Logo from "@/components/ui/Logo";
 import { motion } from "framer-motion";
 import { Play, ShoppingBag } from "lucide-react";
+import Image from "next/image";
 
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0 flex items-center justify-center">
-        <img src="/bg.jpg" alt="background" className="object-center h-full" />
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10" />
+        <Image
+          src="/bg.jpg"
+          alt="background"
+          fill
+          className="object-contain"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/30 to-accent/10" />
         <div className="absolute inset-0 bg-black/60 to-accent/10" />
       </div>
 
