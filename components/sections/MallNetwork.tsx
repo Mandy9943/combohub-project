@@ -29,6 +29,7 @@ export default function MallNetwork() {
     mallLocations.find((mall) => mall.state === "United States") ||
       mallLocations[0]
   );
+  const [isAgeVerified, setIsAgeVerified] = useState(false);
 
   const filteredMalls = mallLocations.filter((mall) =>
     selectedCountry === "United States"
@@ -58,13 +59,14 @@ export default function MallNetwork() {
                     Hiddensin
                   </h3>
                   <p className="text-muted-foreground">
-                    Premium Tobacco Products
+                    Premium Tobacco Products - Adults Only (18+)
                   </p>
                 </div>
               </div>
               <p className="text-lg mb-8 max-w-2xl">
                 Experience the finest selection of premium tobacco products.
-                Available exclusively at select ComboHub locations.
+                Available exclusively at select ComboHub locations for adults
+                aged 18 and above.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 {hiddensinFeatures.map((feature, index) => (
@@ -77,9 +79,26 @@ export default function MallNetwork() {
                   </div>
                 ))}
               </div>
-              <Button className="bg-gradient-to-r from-primary to-accent hover:opacity-90">
-                View Premium Collection
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-4 items-center">
+                <Button
+                  className="bg-gradient-to-r from-primary to-accent hover:opacity-90"
+                  onClick={() => setIsAgeVerified(!isAgeVerified)}
+                >
+                  {isAgeVerified
+                    ? "View Premium Collection"
+                    : "Verify Age (18+)"}
+                </Button>
+                {!isAgeVerified && (
+                  <p className="text-sm text-muted-foreground">
+                    You must be 18 or older to view our premium collection
+                  </p>
+                )}
+                {isAgeVerified && (
+                  <p className="text-sm text-primary">
+                    ✓ Age verified - You can now browse our collection
+                  </p>
+                )}
+              </div>
             </div>
           </GlassCard>
         </motion.div>
