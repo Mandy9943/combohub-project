@@ -10,7 +10,8 @@ export default function Hero() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0 flex items-center justify-center">
         <img src="/bg.jpg" alt="background" className="object-center h-full" />
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/40 via-primary/10 to-accent/10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10" />
+        <div className="absolute inset-0 bg-black/60 to-accent/10" />
       </div>
 
       <div className="container px-4 mx-auto relative z-10">
