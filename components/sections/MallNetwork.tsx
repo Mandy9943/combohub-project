@@ -1,21 +1,40 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Store, MapPin, Cigarette, Shield, Clock, CreditCard } from "lucide-react";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import GlassCard from "@/components/ui/GlassCard";
+import { motion } from "framer-motion";
+import {
+  Cigarette,
+  Clock,
+  CreditCard,
+  MapPin,
+  Shield,
+  Store,
+} from "lucide-react";
+import { useState } from "react";
 import { mallLocations } from "./mallData";
 
 const hiddensinFeatures = [
   { icon: Shield, label: "Verified Authentic Products" },
   { icon: Clock, label: "24/7 Premium Service" },
-  { icon: CreditCard, label: "Secure VIP Transactions" }
+  { icon: CreditCard, label: "Secure VIP Transactions" },
 ];
 
+const countries = ["United States", "Uruguay"];
+
 export default function MallNetwork() {
-  const [selectedMall, setSelectedMall] = useState(mallLocations[0]);
+  const [selectedCountry, setSelectedCountry] = useState("United States");
+  const [selectedMall, setSelectedMall] = useState(
+    mallLocations.find((mall) => mall.state === "United States") ||
+      mallLocations[0]
+  );
+
+  const filteredMalls = mallLocations.filter((mall) =>
+    selectedCountry === "United States"
+      ? mall.state !== "Uruguay"
+      : mall.state === "Uruguay"
+  );
 
   return (
     <section className="py-24 relative">
@@ -35,16 +54,24 @@ export default function MallNetwork() {
                   <Cigarette className="w-8 h-8 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold gradient-text">Hiddensin</h3>
-                  <p className="text-muted-foreground">Premium Tobacco Products</p>
+                  <h3 className="text-2xl font-bold gradient-text">
+                    Hiddensin
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Premium Tobacco Products
+                  </p>
                 </div>
               </div>
               <p className="text-lg mb-8 max-w-2xl">
-                Experience the finest selection of premium tobacco products. Available exclusively at select ComboHub locations.
+                Experience the finest selection of premium tobacco products.
+                Available exclusively at select ComboHub locations.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 {hiddensinFeatures.map((feature, index) => (
-                  <div key={index} className="flex items-center gap-3 p-4 rounded-lg bg-background/50">
+                  <div
+                    key={index}
+                    className="flex items-center gap-3 p-4 rounded-lg bg-background/50"
+                  >
                     <feature.icon className="w-5 h-5 text-primary" />
                     <span>{feature.label}</span>
                   </div>
@@ -59,14 +86,50 @@ export default function MallNetwork() {
 
         {/* Mall Network Section */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Nationwide Mall Network</h2>
-          <p className="text-muted-foreground">Explore our virtual shopping centers across the country</p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Nationwide Mall Network
+          </h2>
+          <p className="text-muted-foreground">
+            Explore our virtual shopping centers across multiple countries
+          </p>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <GlassCard className="col-span-1 p-6">
+            <div className="mb-6">
+              <h3 className="text-xl font-semibold mb-4">Select Country</h3>
+              <div className="flex gap-2">
+                {countries.map((country) => (
+                  <Button
+                    key={country}
+                    variant={
+                      selectedCountry === country ? "default" : "outline"
+                    }
+                    onClick={() => {
+                      setSelectedCountry(country);
+                      const firstMallInCountry = mallLocations.find((mall) =>
+                        country === "United States"
+                          ? mall.state !== "Uruguay"
+                          : mall.state === "Uruguay"
+                      );
+                      if (firstMallInCountry) {
+                        setSelectedMall(firstMallInCountry);
+                      }
+                    }}
+                    className={
+                      selectedCountry === country
+                        ? "bg-gradient-to-r from-primary to-accent"
+                        : ""
+                    }
+                  >
+                    {country}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
             <h3 className="text-xl font-semibold mb-4">Our Locations</h3>
             <div className="space-y-4">
-              {mallLocations.map((mall) => (
+              {filteredMalls.map((mall) => (
                 <motion.div
                   key={mall.id}
                   whileHover={{ scale: 1.02 }}
@@ -81,7 +144,9 @@ export default function MallNetwork() {
                     <Store className="w-5 h-5" />
                     <div>
                       <h4 className="font-medium">{mall.name}</h4>
-                      <p className="text-sm opacity-90">{mall.location}, {mall.state}</p>
+                      <p className="text-sm opacity-90">
+                        {mall.location}, {mall.state}
+                      </p>
                     </div>
                   </div>
                 </motion.div>
@@ -95,7 +160,9 @@ export default function MallNetwork() {
                   <Store className="w-8 h-8 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-semibold mb-2">{selectedMall.name}</h3>
+                  <h3 className="text-2xl font-semibold mb-2">
+                    {selectedMall.name}
+                  </h3>
                   <p className="text-muted-foreground flex items-center gap-2">
                     <MapPin className="w-4 h-4" />
                     {selectedMall.location}, {selectedMall.state}
@@ -105,11 +172,15 @@ export default function MallNetwork() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                 <Card className="p-4 bg-background/50">
                   <h4 className="font-medium mb-1">Total Stores</h4>
-                  <p className="text-2xl font-bold">{selectedMall.totalStores}+</p>
+                  <p className="text-2xl font-bold">
+                    {selectedMall.totalStores}+
+                  </p>
                 </Card>
                 <Card className="p-4 bg-background/50">
                   <h4 className="font-medium mb-1">Daily Visitors</h4>
-                  <p className="text-2xl font-bold">{selectedMall.dailyVisitors.toLocaleString()}+</p>
+                  <p className="text-2xl font-bold">
+                    {selectedMall.dailyVisitors.toLocaleString()}+
+                  </p>
                 </Card>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
@@ -121,7 +192,9 @@ export default function MallNetwork() {
                         <store.icon className="w-5 h-5 text-primary" />
                         <div>
                           <p className="font-medium">{store.name}</p>
-                          <p className="text-sm text-muted-foreground">{store.type}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {store.type}
+                          </p>
                         </div>
                       </div>
                     ))}
@@ -139,7 +212,9 @@ export default function MallNetwork() {
                   </ul>
                 </div>
               </div>
-              <p className="text-muted-foreground mb-8">{selectedMall.description}</p>
+              <p className="text-muted-foreground mb-8">
+                {selectedMall.description}
+              </p>
               <div className="mt-auto">
                 <Button className="w-full sm:w-auto bg-gradient-to-r from-primary to-accent hover:opacity-90">
                   Visit Virtual Mall
