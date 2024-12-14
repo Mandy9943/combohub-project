@@ -56,7 +56,7 @@ export default function MallNetwork() {
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold gradient-text">
-                    Hiddensin
+                    Combonabis
                   </h3>
                   <p className="text-muted-foreground">
                     Premium Tobacco Products - Adults Only (18+)
